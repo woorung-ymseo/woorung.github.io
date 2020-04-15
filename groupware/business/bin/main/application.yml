@@ -1,0 +1,41 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: business # eureka 등록시 application name 으로 등록
+  datasource: 
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/business
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+hystrix:
+  metrics:
+    polling-interval-ms: 10000 # default 10000 - 호출 통계 기준 시간
+  command:
+    bussinessOfEmployeeInfo:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # default 1000
+      circuitBreaker:
+        requestVolumeThreshold: 1 # default 20 - 시도 횟수
+        errorThresholdPercentage: 50 # default 50 - 에러 %
+        sleepWindowInMilliseconds: 5000 # default 5000 - 서킷 오픈 시간
+
+eureka:
+  instance:
+    prefer-ip-address: true  
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka # default address  http://127.0.0.1:8761/eureka  
+ 
+# feign
+feign:
+  hystrix:
+    enabled: true       

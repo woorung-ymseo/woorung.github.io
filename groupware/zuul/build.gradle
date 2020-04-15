@@ -1,0 +1,60 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'hanq.groupware.co.kr.zuul'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.session:spring-session-jdbc'
+	
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+	
+	// [SECURITY] JWT ÅäÅ«
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+	
+	// [SECURITY] Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	
+	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.2.6.RELEASE'
+	
+	// retry
+	compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.5.RELEASE'
+	
+	// eureka client
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '2.2.2.RELEASE'
+	
+	// zuul
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '2.2.2.RELEASE'
+	
+	// [CLOUD] feign
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.2.RELEASE'
+	
+	compileOnly 'org.projectlombok:lombok'
+	
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}

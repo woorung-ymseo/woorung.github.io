@@ -1,0 +1,107 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: zuul
+  session:
+    timeout: 600
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+  datasource: 
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/employee
+    username: root
+    password: root
+  jpa:
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+########### SECURITY START ###########
+
+jwt:
+  secret: omgar # hash key
+  expiration-time: 3600000 # validation Time (1 Hour)
+  token-prefix: hanq # token prefix
+  header-string: Authorizztion # JWT Token Header Authorization
+
+########### SECURITY END ###########    
+  
+# zuul
+zuul:
+  ignored-services: '*'
+  ribbon-isolation-strategy: thread # default : semaphore
+  thread-pool:
+    use-separate-thread-pools: true
+    thread-pool-key-prefix: zuul-
+  routes:
+    employee:
+      path: '/api/employee/**'
+      serviceId: employee
+      stripPrefix: false # service Id prefix 여부
+    business:
+      path: '/business/**'
+      serviceId: business
+      stripPrefix: false 
+  
+
+# eureka
+eureka:
+  instance:
+    non-secure-port: ${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka # default address  http://127.0.0.1:8761/eureka
+  
+# hystrix
+hystrix:
+  command:
+    default:
+      excution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000 # default 1000
+    employee:
+      excution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 # default 1000
+    business:
+      excution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 # default 1000
+  threadpool:
+    zuul-employee:
+      coreSize: 30
+      maximumSize: 100
+      allowMaximumSizeToDivergeFromCoreSize: true
+    zuul-business:
+      coreSize: 30
+      maximumSize: 100
+      allowMaximumSizeToDivergeFromCoreSize: true
+
+# ribbon
+employee:
+  ribbon:
+    MaxAutoRetriesNextServer: 1
+    ReadTimeout: 3000
+    ConnectTimeout: 1000
+    MaxTotalConnections: 300
+    MaxConnectionsPerHost: 100  
+
+# ribbon              
+business:
+  ribbon:
+    MaxAutoRetriesNextServer: 1
+    ReadTimeout: 3000
+    ConnectTimeout: 1000
+    MaxTotalConnections: 300
+    MaxConnectionsPerHost: 100             
