@@ -50,7 +50,6 @@ zuul:
       serviceId: business
       stripPrefix: false 
   
-
 # eureka
 eureka:
   instance:
