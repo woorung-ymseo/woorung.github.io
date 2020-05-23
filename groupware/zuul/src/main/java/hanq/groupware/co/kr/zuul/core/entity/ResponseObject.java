@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.validation.Errors;
 
 @ToString
 @Getter
@@ -37,7 +38,7 @@ public class ResponseObject<T> implements Serializable{
 	
 	@Builder.Default
 	private T body = null;
-	
+
 //	@Builder
 //	public ResponseObject(HttpStatus status, String resultStatus, String resultCode, String resultMessage,
 //			T body) {

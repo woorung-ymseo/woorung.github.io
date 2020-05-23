@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hanq.groupware.co.kr.zuul.core.exception.Auth.AuthenticationEntryPointException;
 
 /**
- * ¿¹¿Ü ÄÁÆ®·Ñ·¯
+ * ì˜ˆì™¸ ì»¨íŠ¸ë¡¤ëŸ¬
  * 
  * @author user
  *

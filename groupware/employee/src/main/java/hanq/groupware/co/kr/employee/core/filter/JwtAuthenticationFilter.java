@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean  {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	/**
-	 * JWT 유효성 검사 Filter
+	 * JWT Filter
 	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

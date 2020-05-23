@@ -7,6 +7,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import hanq.groupware.co.kr.zuul.api.employee.employee.domain.Employee;
+import hanq.groupware.co.kr.zuul.api.employee.service.FeignEmployeeService;
+import hanq.groupware.co.kr.zuul.core.entity.ResponseObject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +30,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
  *
  */
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
 	// secret Key
@@ -35,11 +40,13 @@ public class JwtTokenProvider {
 	// Token Valid Time 
 	@Value("${jwt.expiration-time}")
 	private String tokenValidMilisecond;
+
+	private final FeignEmployeeService feignEmployeeService;
 	
 	/**
-	 * ÀÇÁ¸¼ºÀÌ ¿Ï·áµÈ ÈÄ ÃÊ±âÈ­
+	 *
 	 * 
-	 * secret Key ¾ÏÈ£È­
+	 * secret Key
 	 */
 	@PostConstruct
 	protected void init() {
@@ -47,7 +54,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * JWT ÅäÅ« »ý¼º
+	 * JWT
 	 * 
 	 * @param employeeId
 	 * @param roles
@@ -61,15 +68,15 @@ public class JwtTokenProvider {
 		claims.put("roles", roles);
 		
 		return Jwts.builder()
-					.setClaims(claims)	// È¸¿øÁ¤º¸ µ¥ÀÌÅÍ
-					.setIssuedAt(now) 	// ÅäÅ«¹ßÇàÀÏ
-					.setExpiration(new Date(now.getTime() + Long.parseLong(this.tokenValidMilisecond)))	// ¸¸·áÀÏ
-					.signWith(SignatureAlgorithm.HS256, this.secretKey)	// Å° ¾ÏÈ£È­
+					.setClaims(claims)	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					.setIssuedAt(now) 	// ï¿½ï¿½Å«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					.setExpiration(new Date(now.getTime() + Long.parseLong(this.tokenValidMilisecond)))	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					.signWith(SignatureAlgorithm.HS256, this.secretKey)	// Å° ï¿½ï¿½È£È­
 					.compact();
 	}
 	
 	/**
-	 * JWT¿¡¼­ employee Id ÃßÃâ
+	 * JWT
 	 * 
 	 * @param token
 	 * @return
@@ -83,22 +90,23 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * JWT ÀÎÁõÁ¤º¸ Á¶È¸
+	 * JWT
 	 * 
 	 * @param token
 	 * @return
 	 */
 	public Authentication getAuthentication(String token) {
 		System.out.println("######### this.getUserName(token) : " + this.getEmployeeId(token));
-		
-		UserDetails userDetails = null;
-//		UserDetails userDetails = userDetailsService.loadUserByUsername(this.getEmployeeId(token));
-		
-		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+		ResponseObject<Employee> resEmployee = feignEmployeeService.getEmployeeInfo(this.getEmployeeId(token));
+
+		Employee employee = resEmployee.getBody();
+
+		return new UsernamePasswordAuthenticationToken(employee, "", employee.getAuthorities());
 	}
 	
 	/**
-	 * Header¿¡¼­ Token ¾ò±â
+	 * Header
 	 * 
 	 * @param request
 	 * @return
@@ -108,7 +116,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * ÅäÅ« À¯È¿¼º, ¸¸·áÀÏÀÚ Ã¼Å©
+	 *
 	 * 
 	 * @param token
 	 * @return

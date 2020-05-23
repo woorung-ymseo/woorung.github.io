@@ -25,12 +25,15 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-jdbc'
 	
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
-	
+
+	// dev tool
+	compile "org.springframework.boot:spring-boot-devtools"
+
 	// SWAGGER
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	
-	// [SECURITY] JWT ÅäÅ«
+	// [SECURITY] JWT
 	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
 	
 	// [SECURITY] Security

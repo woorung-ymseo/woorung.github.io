@@ -27,7 +27,7 @@ public class EmployeeDetailServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String employeeId) throws UsernameNotFoundException {
 		Optional<Employee> employee = employeeRepository.findById(Long.parseLong("1"));
 		
-		System.out.println("### gd : " + employee.get().toString());
+		System.out.println("### gd gg: " + employee.get().toString());
 		
 		return employeeRepository.findById(Long.parseLong("1"))
 //		return employeeRepository.findByEmployeeId(employeeId)
@@ -48,6 +48,6 @@ public class EmployeeDetailServiceImpl implements UserDetailsService {
 					
 					return a;
 				})
-				.orElseThrow(() -> new UsernameNotFoundException("»ç¿ëÀÚ ¾ÆÀÌµð°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù"));
+				.orElseThrow(() -> new UsernameNotFoundException("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½"));
 	}
 }

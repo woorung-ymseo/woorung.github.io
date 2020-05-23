@@ -2,6 +2,9 @@ package hanq.groupware.co.kr.employee.sign.service.impl;
 
 import java.util.Optional;
 
+import hanq.groupware.co.kr.employee.core.utils.ResponseObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,11 @@ import hanq.groupware.co.kr.employee.sign.dto.SignReqDto;
 import hanq.groupware.co.kr.employee.sign.dto.SignResDto;
 import hanq.groupware.co.kr.employee.sign.service.SignService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ÌöåÏõê Í≥ÑÏ†ï Í¥ÄÎ†® Service
+ */
 @RequiredArgsConstructor
 @Service
 public class SignServiceImpl implements SignService {
@@ -20,15 +27,12 @@ public class SignServiceImpl implements SignService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final EmployeeRepository employeeRepository;
+
+	private final ResponseObjectUtils responseObjectUtils;
 	
 	@Override
 	public ResponseObject<Employee> employeeSignIn(SignReqDto signReqDto) {
-		System.out.println("#### signReqDto  : "  + signReqDto.toString());
-		
 		Optional<Employee> employeeInfo = employeeRepository.findByEmployeeId(signReqDto.getEmployeeId());
-
-		
-//		Optional<Employee> employeeSign = employeeRepository.findByEmployeeIdAndEmployeePassword(signReqDto.getEmployeeId(), signReqDto.getEmployeePassword());
 		
 		if (employeeInfo.isPresent()) {
 			System.out.println("### employeeInfo  :" + employeeInfo.get().getEmployeePassword());
@@ -39,10 +43,38 @@ public class SignServiceImpl implements SignService {
 						.body(employeeInfo.get())
 						.build();
 			} else {
-				throw new IllegalArgumentException("Invalid Password (∑Œ±◊¿Œ Ω«∆–)");
+				throw new IllegalArgumentException("Invalid Password");
 			}
 		} else {
-			throw new IllegalArgumentException("Employee Not Found (∑Œ±◊¿Œ Ω«∆–)");
+			throw new IllegalArgumentException("Employee Not Found");
 		}
+	}
+
+	@Transactional
+	@Override
+	public ResponseObject<String> employeeSignUp(Employee employee) {
+		String employeeId = employee.getEmployeeId();
+
+		Optional<Employee> employeeInfo = employeeRepository.findByEmployeeId(employeeId);
+
+		// ID Ï§ëÎ≥µ
+		if (employeeInfo.isPresent()) {
+			StringBuffer sBuffer = new StringBuffer();
+
+			sBuffer.append("(")
+				   .append(employeeId)
+				   .append(") Ï§ëÎ≥µÎêú ID");
+
+			return responseObjectUtils.responseForErrors(HttpStatus.BAD_REQUEST, sBuffer.toString());
+		}
+
+		String passWord = employee.getPassword();
+
+		// Password Encoding
+		employee.setEmployeePassword(passwordEncoder.encode(passWord));
+
+		employeeRepository.save(employee);
+
+		return responseObjectUtils.responseForOk("ÌöåÏõêÍ∞ÄÏûÖ ÏôÑÎ£å");
 	}
 }

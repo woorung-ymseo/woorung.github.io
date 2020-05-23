@@ -18,21 +18,8 @@ import hanq.groupware.co.kr.employee.employee.domain.Employee;
 @RequestMapping("/exception")
 public class ExceptionController {
 	
-//	@GetMapping("/entryPoint")
-//	public ResponseObject<Object> entryPointException() {
-//	System.out.println("## gdgd");
-//		
-//		return ResponseObject.builder()
-//				.status(HttpStatus.OK)
-//				.resultCode("E002")
-//				.resultMessage("토큰 없음")
-//				.build();
-//	}
-//	
 	@GetMapping("/entryPoint")
 	public void entryPointException() {
 		throw new AuthenticationEntryPointException();
 	}
-	
-	
 }

@@ -9,20 +9,35 @@ import hanq.groupware.co.kr.employee.roles.domain.RolesEmployee;
 public interface EmployeeService {
 
 	/**
-	 * Á÷¿ø Á¤º¸ Á¶È¸
-	 * 
-	 * @param emplyeeId
+	 * íšŒì› ìƒì„¸ì •ë³´
+	 *
+	 * @param employeeNo
 	 * @return
 	 */
-	ResponseObject<Employee> getEmployeeInfo(Long emplyeeId);
+	ResponseObject<Employee> getEmployeeInfo(Long employeeNo);
+	/**
+	 * íšŒì› ìƒì„¸ì •ë³´
+	 *
+	 * @param employeeId
+	 * @return
+	 */
+	ResponseObject<Employee> getEmployeeInfo(String employeeId);
 	
+	/**
+	 * íšŒì›ë¦¬ìŠ¤íŠ¸
+	 *
+	 * @return
+	 */
+	ResponseObject<List<Employee>> getEmployeeList();
+
+
 	ResponseObject<String> getBusinessOfEmployeeInfo(Long emplyeeId, String businessNo);
 
 	/**
-	 * Á÷¿ø ±ÇÇÑ Á¶È¸
-	 * 
+	 *
 	 * @param employeeId
 	 * @return
 	 */
 	ResponseObject<List<String>> getEmployeeRoles(String employeeId);
+
 }

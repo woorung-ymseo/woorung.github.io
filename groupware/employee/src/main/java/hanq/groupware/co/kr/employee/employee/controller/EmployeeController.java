@@ -21,15 +21,50 @@ public class EmployeeController {
 	private final EmployeeService eployeeService;
 	
 	private final FeignEmployeeService feignEmployeeService;
-	
-	@GetMapping("/get/find/{employeeId}")
-	public ResponseObject<Employee> getEmployee(@PathVariable Long employeeId) {
-//		ResponseObject<Employee> employeInfo = eployeeService.getEmployeeInfo(employeeId);
-		ResponseObject<Employee> employeInfo = eployeeService.getEmployeeInfo(employeeId);
+
+	/**
+	 * 회원상세정보 (Employee No)
+	 *
+	 * @param employeeNo
+	 * @return
+	 */
+	@GetMapping("/get/{employeeNo}")
+	public ResponseObject<Employee> getEmployee(@PathVariable Long employeeNo) {
+		ResponseObject<Employee> employeInfo = eployeeService.getEmployeeInfo(employeeNo);
 		
 		return employeInfo;
 	}
-	
+
+	/**
+	 * 회원상세정보 (Employee Id)
+	 *
+	 * @param employeeId
+	 * @return
+	 */
+	@GetMapping("/get/id/{employeeId}")
+	public ResponseObject<Employee> getEmployeeById(@PathVariable String employeeId) {
+		ResponseObject<Employee> employeInfo = eployeeService.getEmployeeInfo(employeeId);
+
+		return employeInfo;
+	}
+
+	/**
+	 * 회원리스트
+	 *
+	 * @return
+	 */
+	@GetMapping("/get/employees")
+	public ResponseObject<List<Employee>> getEmployeeList() {
+		ResponseObject<List<Employee>> employeInfo = eployeeService.getEmployeeList();
+
+		return employeInfo;
+	}
+
+	/**
+	 * 권한 조회
+	 * @param employeeId
+	 * @return
+	 */
 	@GetMapping("/get/roles/{employeeId}")
 	public ResponseObject<List<String>> getEmployeeRoles(@PathVariable String employeeId) {
 		ResponseObject<List<String>> employeInfo = eployeeService.getEmployeeRoles(employeeId);

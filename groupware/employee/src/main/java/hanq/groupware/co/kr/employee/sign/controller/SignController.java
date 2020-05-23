@@ -5,17 +5,15 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.inject.internal.Errors;
 
 import hanq.groupware.co.kr.employee.core.HanqRestController;
 import hanq.groupware.co.kr.employee.core.entity.ResponseObject;
@@ -35,15 +33,16 @@ public class SignController {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	private final SignService signService;
-	
-	@GetMapping("/signinTest")
-	public String singin22() {
-		return "§æ§∑";
-	}
-			
 
-	@PostMapping("/signin")
-	public ResponseObject<SignResDto> singin(@RequestBody @Valid SignReqDto signReqDto, Errors errors) 
+	/**
+	 * Î°úÍ∑∏Ïù∏
+	 *
+	 * @param signReqDto
+	 * @return
+	 * @throws UsernameNotFoundException
+	 */
+	@PostMapping("/post/signin")
+	public ResponseObject<SignResDto> singIn(@RequestBody @Valid SignReqDto signReqDto)
 	    throws UsernameNotFoundException {
 	    ResponseObject<Employee> resSignEmployeeInfo = signService.employeeSignIn(signReqDto); 
 	    
@@ -53,28 +52,12 @@ public class SignController {
 	    				.build())
 	    		.build();
 	}
-//	
-//	
-//	@PostMapping("/signin")
-//	public Map<String, Object> singin(@RequestBody SignReqDto signReqDto) 
-//			throws UsernameNotFoundException {
-//		
-//		if (signReqDto == null || StringUtils.isEmpty(signReqDto.getEmployeeId()) || StringUtils.isEmpty(signReqDto.getEmployeePassword())) {
-//			throw new RuntimeException("¿ﬂ∏¯µ» ø‰√ª");
-//		}
-//		
-//		ResponseObject<Employee> resEmployee = eployeeService.getEmployeeInfo(Long.parseLong("1")); 
-//		
-//		Employee employee = resEmployee.getBody();
-//		
-//		Map<String, Object> returnMap = new HashMap<>();
-//		
-//		System.out.println("########### employee.getAuthorityList() : " + employee.getAuthorityList().toString());
-//		
-//		returnMap.put("token", jwtTokenProvider.createToken(employee.getEmployeeId(), employee.getAuthorityList()));
-//		
-//		System.out.println("######## returnMap : " + returnMap.toString());
-//		
-//		return returnMap;
-//	}
+
+
+	@PostMapping("/post/signup")
+	public ResponseObject<String> singUp(@RequestBody @Valid Employee employee) {
+	    ResponseObject<String> resSignEmployeeInfo = signService.employeeSignUp(employee);
+
+	    return resSignEmployeeInfo;
+	}
 }

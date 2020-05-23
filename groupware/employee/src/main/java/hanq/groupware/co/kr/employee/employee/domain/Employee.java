@@ -1,87 +1,80 @@
 package hanq.groupware.co.kr.employee.employee.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import hanq.groupware.co.kr.employee.core.serializer.deserializer.GrantedAuthorityDeserializer;
+import hanq.groupware.co.kr.employee.roles.domain.RolesEmployee;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import hanq.groupware.co.kr.employee.roles.domain.RolesEmployee;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Table(name = "tb_employee")
 @Entity
 @Getter
 @Setter
 @ToString
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Employee implements UserDetails {
 
-	private String username;
-	
 	@Id
 	@Column(name = "EMPLOYEE_NO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long employeeNo;
-	
-	private String employeeId; 
-	
-	private String employeePassword;
-	
-	private String employeeName;
-	
-	private String employeeGender;
-	
-	private String employeePosition;
-	
-	private int employeeAge;
-	
-	private String employeeType;
-	
-	@Temporal(TemporalType.DATE)
-	private Date employeeJoinDate;
-	
-	@Temporal(TemporalType.DATE)
-	private Date employeeResignDate;
-	
-	private String employeeStatus;
-	
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "EMPLOYEE_NO")
-    private List<RolesEmployee> roles = new ArrayList<>();
-	
-//	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, targetEntity= RolesEmployee.class) 
-//	@OrderBy("role")
-//	private List<RolesEmployee> roles = new ArrayList<>();
 
+	@NotNull(message = "(직원ID) 필수 항목을 입력해 주세요.")
+	private String employeeId;
+
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@NotNull(message = "(직원PASSWORD) 필수 항목을 입력해 주세요.")
+	private String employeePassword;
+
+	@NotNull(message = "(직원이름) 필수 항목을 입력해 주세요.")
+	private String employeeName;
+
+	@ColumnDefault(value = "M")
+	private String employeeGender;
+
+	@ColumnDefault(value = "01")
+	private String employeePosition;
+
+	@ColumnDefault(value = "20")
+	private int employeeAge;
+
+	@ColumnDefault(value = "01")
+	private String employeeType;
+
+	private String employeeJoinDate;
+
+	private String employeeResignDate;
+
+	@ColumnDefault(value = "01")
+	private String employeeStatus;
+
+	private String regDate;
+
+	private String updDate;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "EMPLOYEE_NO")
+	private List<RolesEmployee> roles = new ArrayList<>();
+	
 	@Builder
 	public Employee(Long employeeNo, String employeeId, String employeePassword, String employeeName, String employeeGender,
-			String employeePosition, int employeeAge, String employeeType, Date employeeJoinDate,
-			Date employeeResignDate, String employeeStatus, List<RolesEmployee> roles) {
+			String employeePosition, int employeeAge, String employeeType, String employeeJoinDate,
+			String employeeResignDate, String regDate, String updDate, String employeeStatus, List<RolesEmployee> roles) {
 		this.employeeNo = employeeNo;
 		this.employeeId = employeeId;
 		this.employeePassword = employeePassword;
@@ -92,6 +85,8 @@ public class Employee implements UserDetails {
 		this.employeeType = employeeType;
 		this.employeeJoinDate = employeeJoinDate;
 		this.employeeResignDate = employeeResignDate;
+		this.regDate = regDate;
+		this.updDate = updDate;
 		this.employeeStatus = employeeStatus;
 		this.roles = roles;
 	}
@@ -104,7 +99,8 @@ public class Employee implements UserDetails {
 				}).collect(Collectors.toList());
 		return lRoles;
 	}
-	
+
+	@JsonDeserialize(using = GrantedAuthorityDeserializer.class)
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles

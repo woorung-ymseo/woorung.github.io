@@ -32,26 +32,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	private static final String URL = "http://business/business/get/find/";
 	
-	/**
-	 * 직원 정보 조회
-	 */
 	@Override
-	public ResponseObject<Employee> getEmployeeInfo(Long employeeId) {
-		System.out.println("emplyeeId  : " + employeeId);
-		Optional<Employee> employee = employeeRepository.findById(employeeId);
+	public ResponseObject<Employee> getEmployeeInfo(Long employeeNo) {
+		System.out.println("employeeNo  : " + employeeNo);
+		Optional<Employee> employee = employeeRepository.findById(employeeNo);
 
-		if (employee.isPresent()) {
-			return ResponseObject.<Employee>builder()
-					.body(employee.get())
-					.build();
-		} else {
-			throw new IllegalArgumentException("Employee Not Found");
-		}
+		return ResponseObject.<Employee>builder()
+				.body(employee.get())
+				.build();
 	}
-	
+
+	@Override
+	public ResponseObject<Employee> getEmployeeInfo(String employeeId) {
+		System.out.println("employeeId  : " + employeeId);
+		Optional<Employee> employee = employeeRepository.findByEmployeeId(employeeId);
+
+		return ResponseObject.<Employee>builder()
+				.body(employee.get())
+				.build();
+	}
+
+	@Override
+	public ResponseObject<List<Employee>> getEmployeeList() {
+		List<Employee> employeeList = employeeRepository.findAll();
+
+		return ResponseObject.<List<Employee>>builder()
+				.body(employeeList)
+				.build();
+	}
 
 	/**
-	 * 직원 권한 조회
 	 */
 	@Override
 	public ResponseObject<List<String>> getEmployeeRoles(String employeeId) {
@@ -95,8 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	public ResponseObject<String> getBusinessOfEmployeeInfoFallback(Long emplyeeId, String businessNo,
 			Throwable t) {
-		System.out.println("### ㅎㅇㅎㅇ  : " + t);
-		
+
 		return ResponseObject.<String>builder()
 				.body("[ emplyeeId = " + emplyeeId + " | businessNo = " + businessNo +" ]")
 				.build();

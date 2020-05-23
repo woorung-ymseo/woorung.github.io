@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @EnableZuulProxy // zuul
-@EnableDiscoveryClient // zuul => Eureka client를 써도 무방하다
+@EnableDiscoveryClient // zuul => Eureka client
 @EnableJdbcHttpSession
 @EnableFeignClients // feign
 @SpringBootApplication

@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignReqDto  implements Serializable {
 
-	@NotNull(message = "¾ÆÀÌµğ´Â ÇÊ¼ö ÀÔ´Ï´Ù.")
+	@NotNull(message = "(ì§ì›ID) í•„ìˆ˜ í•­ëª©ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”.")
 	private String employeeId;
-	
-	@NotNull(message = "ºñ¹Ğ¹øÈ£´Â ÇÊ¼ö ÀÔ´Ï´Ù.")
+
+	@NotNull(message = "(ì§ì›PASSWORD) í•„ìˆ˜ í•­ëª©ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”.")
 	private String employeePassword;
 }

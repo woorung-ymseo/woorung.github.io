@@ -11,12 +11,12 @@ public class FeignEmployeeServiceFallbackFactory implements FallbackFactory<Feig
 	@Override
 	public FeignEmployeeService create(Throwable cause) {
 		System.out.println("#### cause : " + cause);
-//		return (employeeId, businessNo) -> ("ぞしぞしぞし");
+//		return (employeeId, businessNo) -> ("");
 		return new FeignEmployeeService() {
 			@Override
 			public String getBusinessOfEmployeeInfo(Long employeeId, String businessNo) {
 				// TODO Auto-generated method stub
-				return "戚依亀 喫?";
+				return "gd?";
 			}
 		};
 	}

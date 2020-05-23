@@ -32,10 +32,10 @@ public class JwtTokenProvider {
 	@Value("jwt.secret")
 	private String secretKey;
 	
-	private long tokenValidMilisecond = 1000L * 60 * 60; // 1½Ã°£
+	private long tokenValidMilisecond = 1000L * 60 * 60; // 1ï¿½Ã°ï¿½
 	
 	/**
-	 * ÀÇÁ¸¼ºÀÌ ¿Ï·áµÈ ÈÄ ÃÊ±âÈ­
+	 *
 	 */
 	@PostConstruct
 	protected void init() {
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * JWT ÅäÅ« »ý¼º
+	 * JWT
 	 * 
 	 * @param employeeId
 	 * @param roles
@@ -56,15 +56,15 @@ public class JwtTokenProvider {
 		claims.put("roles", roles);
 		
 		return Jwts.builder()
-						.setClaims(claims)	// È¸¿øÁ¤º¸ µ¥ÀÌÅÍ
-						.setIssuedAt(now) 	// ÅäÅ«¹ßÇàÀÏ`
+						.setClaims(claims)	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+						.setIssuedAt(now) 	// ï¿½ï¿½Å«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`
 						.setExpiration(new Date(now.getTime() + this.tokenValidMilisecond))
 						.signWith(SignatureAlgorithm.HS256, this.secretKey)
 						.compact();
 	}
 	
 	/**
-	 * JWT¿¡¼­ username ÃßÃâ
+	 * JWT username
 	 * 
 	 * @param token
 	 * @return
@@ -78,7 +78,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * JWT ÀÎÁõÁ¤º¸ Á¶È¸
+	 * JWT
 	 * 
 	 * @param token
 	 * @return
@@ -92,7 +92,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * Header¿¡¼­ Token ¾ò±â
+	 * Header Token
 	 * 
 	 * @param request
 	 * @return
@@ -102,7 +102,7 @@ public class JwtTokenProvider {
 	}
 	
 	/**
-	 * ÅäÅ« À¯È¿¼º, ¸¸·áÀÏÀÚ Ã¼Å©
+	 *
 	 * 
 	 * @param token
 	 * @return
