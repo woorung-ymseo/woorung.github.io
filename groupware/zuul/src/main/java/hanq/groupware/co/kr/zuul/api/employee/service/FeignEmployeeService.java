@@ -6,7 +6,9 @@ import hanq.groupware.co.kr.zuul.api.employee.factory.FeignEmployeeServiceFalllb
 import hanq.groupware.co.kr.zuul.core.entity.ResponseObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -41,9 +43,10 @@ public interface FeignEmployeeService {
 
     /**
      * 회원정보 수정
+     *
      * @param employee
      * @return
      */
     @RequestMapping(value = "/api/employee/patch")
-    ResponseObject<Employee> patchEmployeeInfo(Employee employee);
+    ResponseObject<Employee> patchEmployeeInfo(@RequestBody Employee employee);
 }

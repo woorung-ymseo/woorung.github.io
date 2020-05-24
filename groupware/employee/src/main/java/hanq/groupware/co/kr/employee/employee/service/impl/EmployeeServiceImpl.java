@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -79,7 +82,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		return null;
 	}
-	
+
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+	@Override
+	public ResponseObject<Employee> patchEmployeeInfo(Employee employee) {
+		System.out.println("## employee : " + employee.toString());
+
+		employeeRepository.save(employee);
+		return null;
+	}
+
 	@Override
 	@HystrixCommand(
 			groupKey = "employee", 

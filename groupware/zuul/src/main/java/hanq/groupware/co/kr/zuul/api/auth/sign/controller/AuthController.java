@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import hanq.groupware.co.kr.zuul.api.auth.sign.domain.SignInParam;
 import hanq.groupware.co.kr.zuul.api.auth.sign.domain.SignIn;
 import hanq.groupware.co.kr.zuul.api.employee.employee.domain.Employee;
+import hanq.groupware.co.kr.zuul.api.employee.validation.EmployeeValidatior;
 import hanq.groupware.co.kr.zuul.core.utils.ResponseObjectUtils;
 import hanq.groupware.co.kr.zuul.core.utils.WebCookieUtils;
 import io.swagger.annotations.Api;
@@ -37,6 +38,8 @@ public class AuthController {
 
 	private final ResponseObjectUtils responseObjectUtils;
 
+	private final EmployeeValidatior employeeValidatior;
+
 	@ApiOperation(value = "로그인")
 	@PostMapping("/auth/signin")
 	public ResponseObject<SignIn> signIn(@RequestBody @Valid SignInParam signReqDto) throws UsernameNotFoundException {
@@ -64,12 +67,15 @@ public class AuthController {
 	public ResponseObject<String> signUp(@RequestBody @Valid Employee employee,
 										 @ApiIgnore Errors errors) {
 
+		employeeValidatior.employeeSignUpValidator(employee, errors);
+
 		if (errors.hasErrors()) {
 			return responseObjectUtils.responseForErrors(errors);
 		}
 
-		ResponseObject<String> resSignUp = feignAuthService.postSignUp(employee);
+//		ResponseObject<String> resSignUp = feignAuthService.postSignUp(employee);
 
-		return resSignUp;
+		return null;
+//		return resSignUp;
 	}
 }

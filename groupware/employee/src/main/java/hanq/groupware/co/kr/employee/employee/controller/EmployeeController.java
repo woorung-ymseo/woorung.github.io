@@ -1,10 +1,11 @@
 package hanq.groupware.co.kr.employee.employee.controller;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import hanq.groupware.co.kr.employee.core.utils.ResponseObjectUtils;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import hanq.groupware.co.kr.employee.core.HanqRestController;
 import hanq.groupware.co.kr.employee.core.entity.ResponseObject;
@@ -12,6 +13,8 @@ import hanq.groupware.co.kr.employee.employee.domain.Employee;
 import hanq.groupware.co.kr.employee.employee.service.EmployeeService;
 import hanq.groupware.co.kr.employee.employee.service.FeignEmployeeService;
 import lombok.RequiredArgsConstructor;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,6 +24,8 @@ public class EmployeeController {
 	private final EmployeeService eployeeService;
 	
 	private final FeignEmployeeService feignEmployeeService;
+
+	private final ResponseObjectUtils responseObjectUtils;
 
 	/**
 	 * 회원상세정보 (Employee No)
@@ -62,6 +67,7 @@ public class EmployeeController {
 
 	/**
 	 * 권한 조회
+	 *
 	 * @param employeeId
 	 * @return
 	 */
@@ -69,6 +75,26 @@ public class EmployeeController {
 	public ResponseObject<List<String>> getEmployeeRoles(@PathVariable String employeeId) {
 		ResponseObject<List<String>> employeInfo = eployeeService.getEmployeeRoles(employeeId);
 		
+		return employeInfo;
+	}
+
+	/**
+	 * 회원정보 수정
+	 *
+	 * @param employee
+	 * @param errors
+	 * @return
+	 */
+	@PostMapping("/patch")
+	public ResponseObject<Employee> patchEmployeeInfo(@Valid @RequestBody Employee employee,
+													 Map<String, Object> map,
+													 Errors errors) {
+		if (errors.hasErrors()) {
+			return responseObjectUtils.responseForErrors(errors);
+		}
+
+		ResponseObject<Employee> employeInfo = eployeeService.patchEmployeeInfo(employee);
+
 		return employeInfo;
 	}
 	

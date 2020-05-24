@@ -15,6 +15,8 @@ import hanq.groupware.co.kr.employee.sign.dto.SignReqDto;
 import hanq.groupware.co.kr.employee.sign.dto.SignResDto;
 import hanq.groupware.co.kr.employee.sign.service.SignService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -50,7 +52,7 @@ public class SignServiceImpl implements SignService {
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@Override
 	public ResponseObject<String> employeeSignUp(Employee employee) {
 		String employeeId = employee.getEmployeeId();

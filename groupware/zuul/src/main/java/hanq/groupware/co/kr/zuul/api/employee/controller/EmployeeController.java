@@ -59,19 +59,18 @@ public class EmployeeController {
     @Transactional
 //    @PreAuthorize("isAuthenticated() and (( #Employee.employeeNo == principal.employeeNo ) or hasRole('ROLE_ADMIN'))")
     @ApiOperation(value = "회원정보수정")
-    @PatchMapping("/employee/patch/{employeeId}")
-    public ResponseObject<String> signUp(@RequestBody @Valid Employee employee,
+    @PostMapping("/employee/patch")
+    public ResponseObject<Employee> signUp(@RequestBody @Valid Employee employee,
                                          @ApiIgnore Errors errors) {
 
         System.out.println("### ㅎㅇ");
 
-        /*if (errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return responseObjectUtils.responseForErrors(errors);
         }
 
-        ResponseObject<String> resSignUp = feignAuthService.postSignUp(employee);*/
+        ResponseObject<Employee> resPatchEmployee = feignEmployeeService.patchEmployeeInfo(employee);
 
-        return responseObjectUtils.responseForOk("ㅎㅇ");
-//        return resSignUp;
+        return resPatchEmployee;
     }
 }

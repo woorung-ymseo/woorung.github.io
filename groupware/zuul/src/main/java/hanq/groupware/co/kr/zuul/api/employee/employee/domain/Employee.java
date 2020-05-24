@@ -73,10 +73,6 @@ public class Employee implements UserDetails {
 	private String employeeId;
 
 	@ApiModelProperty(value = "직원PASSWORD")
-	@NotNull(message = "(직원PASSWORD) 필수 항목을 입력해 주세요.")
-	@Size(min = 8, max = 20, message = "(직원PASSWORD) 글자 수를 확인해 주세요.")
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$",
-				message = "(직원PASSWORD) 영문/숫자/특수문자로 입력해 주세요.")
 	private String employeePassword;
 
 	@ApiModelProperty(value = "직원이름")

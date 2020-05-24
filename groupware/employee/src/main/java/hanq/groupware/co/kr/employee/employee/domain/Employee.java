@@ -9,12 +9,14 @@ import hanq.groupware.co.kr.employee.roles.domain.RolesEmployee;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Employee implements UserDetails {
 
@@ -38,7 +41,7 @@ public class Employee implements UserDetails {
 	private String employeeId;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@NotNull(message = "(직원PASSWORD) 필수 항목을 입력해 주세요.")
+//	@NotNull(message = "(직원PASSWORD) 필수 항목을 입력해 주세요.")
 	private String employeePassword;
 
 	@NotNull(message = "(직원이름) 필수 항목을 입력해 주세요.")
@@ -98,6 +101,17 @@ public class Employee implements UserDetails {
 					return role.getRole();
 				}).collect(Collectors.toList());
 		return lRoles;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		regDate = LocalDateTime.now().toString();
+		employeeJoinDate = LocalDateTime.now().toString();
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		updDate = LocalDateTime.now().toString();
 	}
 
 	@JsonDeserialize(using = GrantedAuthorityDeserializer.class)

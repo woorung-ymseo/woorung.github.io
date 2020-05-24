@@ -30,14 +30,22 @@ public interface EmployeeService {
 	 */
 	ResponseObject<List<Employee>> getEmployeeList();
 
-
-	ResponseObject<String> getBusinessOfEmployeeInfo(Long emplyeeId, String businessNo);
-
 	/**
+	 * 권한 조회
 	 *
 	 * @param employeeId
 	 * @return
 	 */
 	ResponseObject<List<String>> getEmployeeRoles(String employeeId);
 
+	/**
+	 * 회원정보 수정
+	 *
+	 * @param employee
+	 * @return
+	 */
+	ResponseObject<Employee> patchEmployeeInfo(Employee employee);
+
+
+	ResponseObject<String> getBusinessOfEmployeeInfo(Long emplyeeId, String businessNo);
 }
