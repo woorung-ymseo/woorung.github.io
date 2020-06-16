@@ -73,9 +73,8 @@ public class AuthController {
 			return responseObjectUtils.responseForErrors(errors);
 		}
 
-//		ResponseObject<String> resSignUp = feignAuthService.postSignUp(employee);
+		ResponseObject<String> resSignUp = feignAuthService.postSignUp(employee);
 
-		return null;
-//		return resSignUp;
+		return resSignUp;
 	}
 }

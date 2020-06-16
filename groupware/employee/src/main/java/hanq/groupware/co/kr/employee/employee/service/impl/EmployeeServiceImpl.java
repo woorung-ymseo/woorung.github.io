@@ -37,7 +37,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Override
 	public ResponseObject<Employee> getEmployeeInfo(Long employeeNo) {
-		System.out.println("employeeNo  : " + employeeNo);
 		Optional<Employee> employee = employeeRepository.findById(employeeNo);
 
 		return ResponseObject.<Employee>builder()
@@ -47,7 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public ResponseObject<Employee> getEmployeeInfo(String employeeId) {
-		System.out.println("employeeId  : " + employeeId);
 		Optional<Employee> employee = employeeRepository.findByEmployeeId(employeeId);
 
 		return ResponseObject.<Employee>builder()
@@ -68,13 +66,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	@Override
 	public ResponseObject<List<String>> getEmployeeRoles(String employeeId) {
-		System.out.println("employeeId  : " + employeeId);
-		
 		Optional<Employee> employee = employeeRepository.findByEmployeeId(employeeId);
 		
 		if (employee.isPresent()) {
-			System.out.println("### roles : " + employee.get().getAuthorityList());
-			
+
 			return ResponseObject.<List<String>>builder()
 					.body(employee.get().getAuthorityList())
 					.build();

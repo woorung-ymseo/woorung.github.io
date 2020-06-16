@@ -63,8 +63,6 @@ public class EmployeeController {
     public ResponseObject<Employee> signUp(@RequestBody @Valid Employee employee,
                                          @ApiIgnore Errors errors) {
 
-        System.out.println("### ㅎㅇ");
-
         if (errors.hasErrors()) {
             return responseObjectUtils.responseForErrors(errors);
         }

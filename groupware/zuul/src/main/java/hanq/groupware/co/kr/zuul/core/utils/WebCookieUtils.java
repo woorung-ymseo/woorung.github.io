@@ -35,7 +35,7 @@ public class WebCookieUtils {
      * @param value
      */
     public static void addCookie(String key, String value) {
-        addCookie(key, value, 60*60);
+        addCookie(key, value, -1);
     }
 
     /**

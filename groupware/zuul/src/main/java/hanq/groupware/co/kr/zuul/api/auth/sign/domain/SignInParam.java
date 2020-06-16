@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class SignInParam implements Serializable {
 
-	@ApiModelProperty(required = true, value = "직원ID")
+	@ApiModelProperty(required = true, value = "직원ID", example = "vggm00004")
 	@NotNull(message = "(직원ID) 필수 항목을 입력해 주세요.")
 	private String employeeId;
 
-	@ApiModelProperty(required = true, value = "직원PASSWORD")
+	@ApiModelProperty(required = true, value = "직원PASSWORD", example = "dkstnals1!")
 	@NotNull(message = "(직원PASSWORD) 필수 항목을 입력해 주세요.")
 	private String employeePassword;
 }
